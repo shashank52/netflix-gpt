@@ -1,6 +1,6 @@
- class AppPaths {
-    static DEFAULT = '/';
-    static BROWSE = '/browse';
+class AppPaths {
+  static DEFAULT = "/";
+  static BROWSE = "/browse";
 }
 
-export default AppPaths
+export default AppPaths;
