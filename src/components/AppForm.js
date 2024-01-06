@@ -1,7 +1,20 @@
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import React, { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import AppPaths from "../routes/AppPaths";
+import { auth } from "../utils/firebase";
+import { addUser } from "../utils/userSlice";
 import { checkValidData } from "../utils/validate";
 
 const AppForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -13,16 +26,77 @@ const AppForm = () => {
     const message = checkValidData(
       email.current.value,
       password.current.value,
-      name.current.value,
+      isSignInForm ? "" : name.current.value,
       isSignInForm
     );
 
     setErrorMessage(message);
+
+    if (message) return;
+
+    if (!isSignInForm) {
+      // sign up logic
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name.current.value,
+          })
+            .then(() => {
+              // Profile updated!
+              const { uid, email, displayName } = auth.currentUser;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                })
+              );
+              navigate(AppPaths.BROWSE);
+              // ...
+            })
+            .catch((error) => {
+              setErrorMessage(error.message);
+            });
+
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode + " - " + errorMessage);
+          // ..
+        });
+    } else {
+      // sign in logic
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+
+          navigate(AppPaths.BROWSE);
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode + " - " + errorMessage);
+        });
+    }
   };
 
   const toggleSignInForm = () => {
     setIsSignInForm(!isSignInForm);
-    setErrorMessage(null);
+    // setErrorMessage(null);
   };
   return (
     <div className="w-4/12 absolute p-16 bg-black my-36 mx-auto right-0 left-0 text-white bg-opacity-80">
