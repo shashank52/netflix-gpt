@@ -5,15 +5,12 @@ import {
 } from "firebase/auth";
 import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import AppPaths from "../routes/AppPaths";
 import { auth } from "../utils/firebase";
 import { addUser } from "../utils/userSlice";
 import { checkValidData } from "../utils/validate";
 
 const AppForm = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -57,7 +54,7 @@ const AppForm = () => {
                   displayName: displayName,
                 })
               );
-              navigate(AppPaths.BROWSE);
+
               // ...
             })
             .catch((error) => {
@@ -83,7 +80,6 @@ const AppForm = () => {
           // Signed in
           const user = userCredential.user;
 
-          navigate(AppPaths.BROWSE);
           // ...
         })
         .catch((error) => {

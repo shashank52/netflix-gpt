@@ -14,6 +14,11 @@
 - Created Redux store with user slice
 - Update Profile
 - Implemented sign out
+- BugFix: Added Route gaurd to protected routes.
+- Unsubscribed to onAuthStateChange callback.
+- Register TMDB api & create an app & get access token
+- Get Data from TMDB now playing movies list
+- created custom hook for now playing videos
 
 # Features
 
