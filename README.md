@@ -19,6 +19,11 @@
 - Register TMDB api & create an app & get access token
 - Get Data from TMDB now playing movies list
 - created custom hook for now playing videos
+- update stores with movie data
+- fetched data for trailer video
+- update store with trailer video data
+- embedded the youtube video and make it auto play
+- Use tailwind css for main container
 
 # Features
 
