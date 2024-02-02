@@ -47,7 +47,7 @@ const Header = () => {
     return () => unsubscribe();
   }, []);
   return (
-    <div className="absolute w-full px-8 py-2 flex justify-between">
+    <div className="absolute w-full px-8 py-2 flex justify-between z-10">
       <img className="w-52" src={AppAssets.logo} alt="logo" />
       {user && (
         <div className="flex p-2">
